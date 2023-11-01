@@ -10,7 +10,7 @@ public class Setup {
 
     private static final String VERSION = "1.0";
 
-    static public void exportResource(String resourceName, String dest) throws Exception {
+    static public void exportResource(String resourceName, String dest) throws IOException {
         try (InputStream is = Main.class.getClassLoader().getResourceAsStream(resourceName)) {
             Files.copy(is, Paths.get(dest), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -19,7 +19,7 @@ public class Setup {
         }
     }
 
-    public Setup() throws Exception {
+    public Setup() throws IOException {
         File toolsDir = new File("tools");
         if (toolsDir.exists()) {
             File versionFile = new File("tools/version.txt");

@@ -127,7 +127,7 @@ public class iTunesBridge extends Thread {
                 return;
             }
 
-            BufferedImage artwork = ImageIO.read(new File("tmp." + format));
+            BufferedImage artwork = ImageIO.read(new File("./tools/tmp." + format));
             trackInfo.setArtwork(artwork);
             System.out.println("[ArtworkExtractor] Read artwork (Format: " + format + ")");
 
