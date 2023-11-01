@@ -5,6 +5,7 @@ With iTunesRPC you can display your current listening status in Discord, just as
 
 # So why this if there are already alternatives
 I couldn't find an alternative that can display the cover art of local files (non-AppleMusic tracks)
+This only really makes sense for you if you, like me, want an RPC Client that can display all album artworks (even on local files).
 
 # Work-In-Progress
 This is very WIP, it should not yet be considered a finished product
