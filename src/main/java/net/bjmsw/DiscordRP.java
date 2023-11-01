@@ -6,9 +6,6 @@ import de.jcm.discordgamesdk.activity.Activity;
 import net.bjmsw.model.TrackInfo;
 
 import java.io.File;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class DiscordRP extends Thread {
 
@@ -26,7 +23,7 @@ public class DiscordRP extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        File discordLibrary = new File("./discord_game_sdk.dll");
+        File discordLibrary = new File("./tools/discord_game_sdk.dll");
         Core.init(discordLibrary);
 
         try (CreateParams params = new CreateParams()) {
@@ -54,6 +51,8 @@ public class DiscordRP extends Thread {
                             else {
                                 activity.setState("on " + trackInfo.getAlbum());
                                 activity.assets().setLargeText(trackInfo.getAlbum());
+                                activity.assets().setSmallImage("https://cdn.bjmsw.net/img/itunes_logo.png");
+                                activity.assets().setSmallText("iTunesRPC by b.jm021");
                             }
 
                             //activity.assets().setSmallText(trackInfo.getArtist());
@@ -66,7 +65,6 @@ public class DiscordRP extends Thread {
                             String artwork = Main.artworkQueue.poll();
                             System.out.println("[DiscordRP] Updating RPC with artwork (" + artwork + ")");
                             activity.assets().setLargeImage(artwork);
-                            //activity.assets().setSmallImage(artwork);
                             core.activityManager().updateActivity(activity);
                         }
                         if (Main.playerStatus == 0) {

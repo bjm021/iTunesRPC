@@ -47,3 +47,7 @@ tmp.jpg
 ### Config ###
 config.json
 
+### Tools ###
+tools/
+tools/*
+

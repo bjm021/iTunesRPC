@@ -25,7 +25,7 @@ public class iTunesBridge extends Thread {
         while (true) {
 
             try {
-                String command = "cscript //NoLogo getTrackInfo.vbs";
+                String command = "cscript //NoLogo .\\tools\\getTrackInfo.vbs";
                 Process process = Runtime.getRuntime().exec(command);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
                 String line;
@@ -109,7 +109,7 @@ public class iTunesBridge extends Thread {
 
     private void extractArtwork() {
         try {
-            String command = "cscript //NoLogo extractArtwork.vbs";
+            String command = "cscript //NoLogo .\\tools\\extractArtwork.vbs";
             Process process = Runtime.getRuntime().exec(command);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
