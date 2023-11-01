@@ -1,0 +1,27 @@
+# iTunesRPC
+A WIP Discord Rich Presence App for iTunes on Windows
+
+With iTunesRPC you can display your current listening status in Discord, just as Spotify does!
+
+# So why this if there are already alternatives
+I couldn't find an alternative that can display the cover art of local files (non-AppleMusic tracks)
+
+# Work-In-Progress
+This is very WIP, it should not yet be considered a finished product
+
+# Planned Features
+- Cover Art (even on local files) (need upload solution)
+- Timestamp of current playing track
+- Basic track info
+- Cros-Platform?
+- Many more?
+
+# Usage
+Just download the jar (future if there are any releases) or build it yourself
+
+# Required files
+All of these files will later be included in the jar and auto extract or somthing like this.
+They are all in the root of this repository and need to be at the working directory of the porgram.
+- discord_game_sdk.dll (Discord Game SDK)
+- getTrackInfo.vbs (Get track info from iTunes)
+- extractArtwork.vbs (Extract the Artwork from iTunes)
