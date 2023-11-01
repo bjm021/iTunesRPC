@@ -17,7 +17,8 @@ This is very WIP, it should not yet be considered a finished product
 - Many more?
 
 # Usage
-Just download the jar (future if there are any releases) or build it yourself
+Just download the jar (future if there are any releases) or build it yourself.
+File uploading needs a solution (not usable, currently on private host)
 
 # Required files
 All of these files will later be included in the jar and auto extract or somthing like this.
