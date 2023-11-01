@@ -51,14 +51,21 @@ End Function
 Dim iTunes
 Set iTunes = CreateObject("iTunes.Application")
 
+Dim output
+Dim encodedOutput
+
 If iTunes.CurrentTrack is Nothing Then
-    WScript.Echo "{""title"": """", ""artist"": """", ""album"": """", ""state"": ""0""}"
+    output =  "{""title"": """", ""artist"": """", ""album"": """", ""state"": ""0""}"
+
+    ' Encode the output as Base64
+
+    encodedOutput = Base64Encode(output)
+    WScript.Echo encodedOutput
 Else
-    Dim output
+
     output =  "{""title"": """ & iTunes.CurrentTrack.Name & """, ""artist"": """ & iTunes.CurrentTrack.Artist & """ , ""album"": """ & iTunes.CurrentTrack.Album & """, ""state"": """ & iTunes.PlayerState & """}"
 
     ' Encode the output as Base64
-    Dim encodedOutput
     encodedOutput = Base64Encode(output)
     WScript.Echo encodedOutput
 
