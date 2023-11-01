@@ -42,3 +42,7 @@ build/
 
 ### Tmp cover artwork ###
 tmp.png
+./tmp.png
+
+### Config ###
+config.json

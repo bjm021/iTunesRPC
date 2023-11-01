@@ -8,6 +8,12 @@ Else
         If Not iTunes.CurrentTrack.Artwork Is Nothing Then
             Dim artworkData
             Set artworkData = iTunes.CurrentTrack.Artwork
+
+            If artworkData.Count = 0 Then
+                WScript.Echo "{""" & "format"": ""none""}"
+                WScript.Quit
+            End If
+
             Dim artwork
             Set artwork = artworkData.Item(1)
             Dim format ' 1 = JPEG, 2 = PNG, 3 = BMP

@@ -7,6 +7,8 @@ import net.bjmsw.model.TrackInfo;
 
 import java.io.File;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class DiscordRP extends Thread {
 
@@ -40,11 +42,23 @@ public class DiscordRP extends Thread {
                             System.out.println("[DiscordRP] Queue not empty, updating RPC");
                             TrackInfo trackInfo = Main.trackInfoQueue.poll();
                             System.out.println("[DiscordRP] Updating RPC");
-                            activity.setDetails(trackInfo.getTrackName() + " by " + trackInfo.getArtist());
-                            activity.setState("on " + trackInfo.getAlbum());
-                            activity.assets().setLargeText(trackInfo.getAlbum());
+
+                            String details = trackInfo.getTrackName();
+                            if (!trackInfo.getArtist().isEmpty()) details += " by " + trackInfo.getArtist();
+                            activity.setDetails(details);
+
+                            if (trackInfo.getAlbum().isEmpty()) {
+                                activity.setState("iTunesRPC by b.jm021");
+                                activity.assets().setLargeText("iTunesRPC by b.jm021");
+                            }
+                            else {
+                                activity.setState("on " + trackInfo.getAlbum());
+                                activity.assets().setLargeText(trackInfo.getAlbum());
+                            }
+
                             //activity.assets().setSmallText(trackInfo.getArtist());
-                            activity.timestamps().setStart(Instant.ofEpochSecond(trackInfo.getStartTime()));
+                            // calcuilate end time (now + length)
+                            long endTime = trackInfo.getStartTime() + trackInfo.getLength();
                             core.activityManager().updateActivity(activity);
                         }
                         if (!Main.artworkQueue.isEmpty()) {
@@ -57,8 +71,12 @@ public class DiscordRP extends Thread {
                         }
                         if (Main.playerStatus == 0) {
                             core.activityManager().clearActivity();
+                        } else {
+                            activity.timestamps().setEnd(Main.endTime);
+                            core.activityManager().updateActivity(activity);
+                            core.runCallbacks();
                         }
-                        core.runCallbacks();
+
                         try {
                             // Sleep a bit to save CPU
                             Thread.sleep(100);

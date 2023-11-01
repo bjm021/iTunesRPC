@@ -39,6 +39,8 @@ public class ImageUploader {
             name + ".png"
             );
 
+            builder.addTextBody("password", Config.getInstance().getUploadPassword());
+
             HttpEntity multipart = builder.build();
             uploadFile.setEntity(multipart);
             CloseableHttpResponse response = httpClient.execute(uploadFile);

@@ -10,8 +10,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 
 public class iTunesBridge extends Thread {
@@ -51,7 +51,7 @@ public class iTunesBridge extends Thread {
 
                 JSONObject trackInfoJSON = new JSONObject(result);
                 int playerStatus = trackInfoJSON.getInt("state");
-                trackInfo = new TrackInfo(trackInfoJSON.getString("title"), trackInfoJSON.getString("artist"), trackInfoJSON.getString("album"));
+                trackInfo = new TrackInfo(trackInfoJSON.getString("title"), trackInfoJSON.getString("artist"), trackInfoJSON.getString("album"), trackInfoJSON.getInt("duration"));
                 if (lastTrackName.equals("notinitalized")) {
                     lastTrackName = trackInfo.getTrackName();
                     System.out.println("[iTunesBridge] First track: " + trackInfo.getTrackName());
@@ -76,6 +76,16 @@ public class iTunesBridge extends Thread {
 
                     if (playerStatus == 1) Main.trackInfoQueue.add(trackInfo);
                 }
+
+                int position = trackInfoJSON.getInt("position");
+                int duration = trackInfoJSON.getInt("duration");
+
+                // calculate the end timestamp
+                // now + (duration - position)
+                long endTime = System.currentTimeMillis() / 1000L + (duration - position);
+                // to EpochSecond
+                endTime = Instant.ofEpochSecond(endTime).getEpochSecond();
+                Main.endTime = Instant.ofEpochSecond(endTime);
 
 
 
@@ -111,6 +121,12 @@ public class iTunesBridge extends Thread {
             }
 
             var format = new JSONObject(output.toString()).getString("format");
+
+            if (format.equals("none")) {
+                Main.artworkQueue.add("https://cdn.bjmsw.net/img/itunes_logo.png");
+                return;
+            }
+
             BufferedImage artwork = ImageIO.read(new File("tmp." + format));
             trackInfo.setArtwork(artwork);
             System.out.println("[ArtworkExtractor] Read artwork (Format: " + format + ")");

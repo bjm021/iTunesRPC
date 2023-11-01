@@ -63,7 +63,7 @@ If iTunes.CurrentTrack is Nothing Then
     WScript.Echo encodedOutput
 Else
 
-    output =  "{""title"": """ & iTunes.CurrentTrack.Name & """, ""artist"": """ & iTunes.CurrentTrack.Artist & """ , ""album"": """ & iTunes.CurrentTrack.Album & """, ""state"": """ & iTunes.PlayerState & """}"
+    output =  "{""title"": """ & iTunes.CurrentTrack.Name & """, ""artist"": """ & iTunes.CurrentTrack.Artist & """ , ""album"": """ & iTunes.CurrentTrack.Album & """, ""state"": """ & iTunes.PlayerState & """, ""position"": """ & iTunes.PlayerPosition & """, ""duration"": """ & iTunes.CurrentTrack.Duration & """}"
 
     ' Encode the output as Base64
     encodedOutput = Base64Encode(output)

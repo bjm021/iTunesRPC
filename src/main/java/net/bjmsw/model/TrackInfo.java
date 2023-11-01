@@ -8,19 +8,22 @@ public class TrackInfo {
 
     private BufferedImage artwork;
 
+    private final int length;
+
     // current time in seconds
     private final long startTime;
 
     private final boolean isEmpty;
 
-    public TrackInfo(String trackName, String artist, String album) {
+    public TrackInfo(String trackName, String artist, String album, int length) {
         this.trackName = trackName;
         this.artist = artist;
         this.album = album;
         this.artwork = null;
+        this.length = length;
         this.startTime = System.currentTimeMillis() / 1000L;
 
-        if (trackName.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+        if (trackName.isEmpty()) {
             isEmpty = true;
         }  else {
             isEmpty = false;
@@ -53,6 +56,10 @@ public class TrackInfo {
 
     public boolean isEmpty() {
         return isEmpty;
+    }
+
+    public int getLength() {
+        return length;
     }
 }
 

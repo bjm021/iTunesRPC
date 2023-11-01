@@ -1,11 +1,9 @@
 package net.bjmsw;
 
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
-import de.jcm.discordgamesdk.activity.Activity;
+import net.bjmsw.helper.Config;
 import net.bjmsw.model.TrackInfo;
 
-import java.io.File;
+import java.time.Instant;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -15,8 +13,11 @@ public class Main extends Thread {
     public static Queue<String> artworkQueue;
 
     public static int playerStatus = 0;
+    public static Instant endTime = Instant.now();
 
     public static void main(String[] args) {
+        Config.getInstance();
+
         trackInfoQueue = new ArrayBlockingQueue<>(100);
         artworkQueue = new ArrayBlockingQueue<>(100);
 
