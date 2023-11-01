@@ -50,18 +50,31 @@ public class iTunesBridge extends Thread {
 
 
                 JSONObject trackInfoJSON = new JSONObject(result);
+                int playerStatus = trackInfoJSON.getInt("state");
                 trackInfo = new TrackInfo(trackInfoJSON.getString("title"), trackInfoJSON.getString("artist"), trackInfoJSON.getString("album"));
                 if (lastTrackName.equals("notinitalized")) {
                     lastTrackName = trackInfo.getTrackName();
-                    extractArtwork();
+                    System.out.println("[iTunesBridge] First track: " + trackInfo.getTrackName());
+                    System.out.println("[iTunesBridge] First artist: " + trackInfo.getArtist());
+                    System.out.println("[iTunesBridge] First album: " + trackInfo.getAlbum());
+                    System.out.println("[iTunesBridge] is empty?: " + trackInfo.isEmpty());
+                    if (!trackInfo.isEmpty()) extractArtwork();
                     Main.trackInfoQueue.add(trackInfo);
                 } else if (!lastTrackName.equals(trackInfo.getTrackName())) {
                     lastTrackName = trackInfo.getTrackName();
                     System.out.println("[iTunesBridge] New track: " + trackInfo.getTrackName());
                     System.out.println("[iTunesBridge] New artist: " + trackInfo.getArtist());
                     System.out.println("[iTunesBridge] New album: " + trackInfo.getAlbum());
-                    extractArtwork();
+                    System.out.println("[iTunesBridge] is empty?: " + trackInfo.isEmpty());
+                    if (!trackInfo.isEmpty()) extractArtwork();
                     Main.trackInfoQueue.add(trackInfo);
+                }
+
+                if (playerStatus != Main.playerStatus) {
+                    Main.playerStatus = playerStatus;
+                    System.out.println("[iTunesBridge] Player status changed to " + playerStatus);
+
+                    if (playerStatus == 1) Main.trackInfoQueue.add(trackInfo);
                 }
 
 

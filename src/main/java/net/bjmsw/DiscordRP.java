@@ -43,6 +43,7 @@ public class DiscordRP extends Thread {
                             activity.setDetails(trackInfo.getTrackName() + " by " + trackInfo.getArtist());
                             activity.setState("on " + trackInfo.getAlbum());
                             activity.assets().setLargeText(trackInfo.getAlbum());
+                            //activity.assets().setSmallText(trackInfo.getArtist());
                             activity.timestamps().setStart(Instant.ofEpochSecond(trackInfo.getStartTime()));
                             core.activityManager().updateActivity(activity);
                         }
@@ -51,7 +52,11 @@ public class DiscordRP extends Thread {
                             String artwork = Main.artworkQueue.poll();
                             System.out.println("[DiscordRP] Updating RPC with artwork (" + artwork + ")");
                             activity.assets().setLargeImage(artwork);
+                            //activity.assets().setSmallImage(artwork);
                             core.activityManager().updateActivity(activity);
+                        }
+                        if (Main.playerStatus == 0) {
+                            core.activityManager().clearActivity();
                         }
                         core.runCallbacks();
                         try {

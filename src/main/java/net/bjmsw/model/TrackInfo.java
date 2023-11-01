@@ -11,14 +11,7 @@ public class TrackInfo {
     // current time in seconds
     private final long startTime;
 
-
-    public TrackInfo(String trackName, String artist, String album, BufferedImage artwork) {
-        this.trackName = trackName;
-        this.artist = artist;
-        this.album = album;
-        this.artwork = artwork;
-        this.startTime = System.currentTimeMillis() / 1000L;
-    }
+    private final boolean isEmpty;
 
     public TrackInfo(String trackName, String artist, String album) {
         this.trackName = trackName;
@@ -26,6 +19,12 @@ public class TrackInfo {
         this.album = album;
         this.artwork = null;
         this.startTime = System.currentTimeMillis() / 1000L;
+
+        if (trackName.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+            isEmpty = true;
+        }  else {
+            isEmpty = false;
+        }
     }
 
     public String getTrackName() {
@@ -50,6 +49,10 @@ public class TrackInfo {
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 }
 

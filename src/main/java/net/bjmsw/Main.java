@@ -14,6 +14,8 @@ public class Main extends Thread {
     public static Queue<TrackInfo> trackInfoQueue;
     public static Queue<String> artworkQueue;
 
+    public static int playerStatus = 0;
+
     public static void main(String[] args) {
         trackInfoQueue = new ArrayBlockingQueue<>(100);
         artworkQueue = new ArrayBlockingQueue<>(100);
