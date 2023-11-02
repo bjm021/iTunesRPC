@@ -1,10 +1,10 @@
-package net.bjmsw;
+package net.bjmsw.itunesrpc;
 
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.activity.Activity;
-import net.bjmsw.helper.Setup;
-import net.bjmsw.model.TrackInfo;
+import net.bjmsw.itunesrpc.helper.Setup;
+import net.bjmsw.itunesrpc.mocel.TrackInfo;
 
 import java.io.File;
 
@@ -19,9 +19,11 @@ public class DiscordRP extends Thread {
     private boolean checkUpdate = true;
 
     public void run() {
+        Main.rpcRunning = true;
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
+            Main.rpcRunning = false;
             throw new RuntimeException(e);
         }
         File discordLibrary = null;
@@ -50,6 +52,13 @@ public class DiscordRP extends Thread {
 
                 try (Activity activity = new Activity()) {
                     while (true) {
+                        if (!Main.rpcEnabled) {
+                            //stop thread
+                            System.out.println("[DiscordRP] Stopping thread");
+                            Main.rpcRunning = false;
+                            return;
+                        }
+
                         if (!Main.trackInfoQueue.isEmpty()) {
                             System.out.println("[DiscordRP] Queue not empty, updating RPC");
                             TrackInfo trackInfo = Main.trackInfoQueue.poll();
@@ -97,7 +106,7 @@ public class DiscordRP extends Thread {
                             // Sleep a bit to save CPU
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Main.rpcRunning = false;
                         }
                     }
                 }

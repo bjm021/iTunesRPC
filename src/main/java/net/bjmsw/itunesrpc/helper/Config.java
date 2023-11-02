@@ -1,4 +1,4 @@
-package net.bjmsw.helper;
+package net.bjmsw.itunesrpc.helper;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;

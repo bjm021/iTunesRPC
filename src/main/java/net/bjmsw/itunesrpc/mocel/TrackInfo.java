@@ -1,4 +1,4 @@
-package net.bjmsw.model;
+package net.bjmsw.itunesrpc.mocel;
 
 import java.awt.image.BufferedImage;
 

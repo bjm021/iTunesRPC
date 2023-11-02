@@ -1,6 +1,6 @@
-package net.bjmsw.helper;
+package net.bjmsw.itunesrpc.helper;
 
-import net.bjmsw.Main;
+import net.bjmsw.itunesrpc.Main;
 
 import java.io.*;
 import java.nio.file.Files;

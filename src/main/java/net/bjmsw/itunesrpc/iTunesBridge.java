@@ -1,9 +1,9 @@
-package net.bjmsw;
+package net.bjmsw.itunesrpc;
 
-import net.bjmsw.helper.ImageUploader;
-import net.bjmsw.helper.Setup;
-import net.bjmsw.model.TrackInfo;
-import org.json.JSONException;
+import javafx.application.Platform;
+import net.bjmsw.itunesrpc.helper.ImageUploader;
+import net.bjmsw.itunesrpc.helper.Setup;
+import net.bjmsw.itunesrpc.mocel.TrackInfo;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -78,6 +78,7 @@ public class iTunesBridge extends Thread {
                     System.out.println("[iTunesBridge] is empty?: " + trackInfo.isEmpty());
                     if (!trackInfo.isEmpty()) extractArtwork();
                     Main.trackInfoQueue.add(trackInfo);
+                    Platform.runLater(Main::updateUI);
                 } else if (!lastTrackName.equals(trackInfo.getTrackName())) {
                     lastTrackName = trackInfo.getTrackName();
                     System.out.println("[iTunesBridge] New track: " + trackInfo.getTrackName());
@@ -86,6 +87,7 @@ public class iTunesBridge extends Thread {
                     System.out.println("[iTunesBridge] is empty?: " + trackInfo.isEmpty());
                     if (!trackInfo.isEmpty()) extractArtwork();
                     Main.trackInfoQueue.add(trackInfo);
+                    Platform.runLater(Main::updateUI);
                 }
 
                 if (playerStatus != Main.playerStatus) {
@@ -118,7 +120,8 @@ public class iTunesBridge extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("[iTunesBridge] Thread interrupted");
+                System.out.println("[iTunesBridge] Stopping iTunesBridge");
             }
 
         }
@@ -159,6 +162,7 @@ public class iTunesBridge extends Thread {
 
             String url = ImageUploader.uploadImage(artwork, trackInfo.getAlbum());
             Main.artworkQueue.add(url);
+            Platform.runLater(Main::updateUI);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,5 +170,9 @@ public class iTunesBridge extends Thread {
 
     public TrackInfo getTrackInfo() {
         return trackInfo;
+    }
+
+    public void reset() {
+        lastTrackName = "notinitalized";
     }
 }
