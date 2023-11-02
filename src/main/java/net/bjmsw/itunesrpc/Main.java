@@ -139,6 +139,10 @@ public class Main extends Application {
         UpdateUI updateUI = new UpdateUI();
         updateUI.start();
 
+        stage.setTitle("iTunesRPC by b.jm021");
+        // set icon from resources
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("assets/itunes_logo.png")));
+
         stage.setScene(scene);
         stage.show();
 
