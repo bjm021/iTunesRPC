@@ -24,6 +24,7 @@ File uploading needs a solution (not usable, currently on private host)
 
 # Required files
 All required files will now be extracted from the JAR file automatically.
+
 ~~All of these files will later be included in the jar and auto extract or somthing like this.
 They are all in the root of this repository and need to be at the working directory of the porgram.~~
 - ~~discord_game_sdk.dll (Discord Game SDK)~~
