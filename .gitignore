@@ -48,6 +48,6 @@ tmp.jpg
 config.json
 
 ### Tools ###
-tools/
-tools/*
 
+/tools/
+/tools/*

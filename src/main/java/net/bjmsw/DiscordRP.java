@@ -40,16 +40,19 @@ public class DiscordRP extends Thread {
                             TrackInfo trackInfo = Main.trackInfoQueue.poll();
                             System.out.println("[DiscordRP] Updating RPC");
 
-                            String details = trackInfo.getTrackName();
-                            if (!trackInfo.getArtist().isEmpty()) details += " by " + trackInfo.getArtist();
-                            activity.setDetails(details);
+
+                            activity.setDetails(trackInfo.getTrackName());
+
+                            if (!trackInfo.getArtist().isEmpty()) activity.setState("by " + trackInfo.getArtist());
+                            else activity.setState("iTunesRPC by b.jm021");
+
 
                             if (trackInfo.getAlbum().isEmpty()) {
-                                activity.setState("iTunesRPC by b.jm021");
                                 activity.assets().setLargeText("iTunesRPC by b.jm021");
+                                activity.assets().setSmallText("");
+                                activity.assets().setSmallImage("");
                             }
                             else {
-                                activity.setState("on " + trackInfo.getAlbum());
                                 activity.assets().setLargeText(trackInfo.getAlbum());
                                 activity.assets().setSmallImage("https://cdn.bjmsw.net/img/itunes_logo.png");
                                 activity.assets().setSmallText("iTunesRPC by b.jm021");
