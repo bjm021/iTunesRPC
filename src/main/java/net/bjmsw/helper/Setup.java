@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public class Setup {
 
-    enum OS {
+    public enum OS {
         WINDOWS, MAC, LINUX, OTHER
     }
 
@@ -25,6 +25,21 @@ public class Setup {
 
 
     public Setup() throws IOException {
+
+        String osName = System.getProperty("os.name").toLowerCase();
+        OS currentOS = OS.OTHER;
+        if (osName.contains("windows")) {
+            currentOS = OS.WINDOWS;
+            Main.currentOS = OS.WINDOWS;
+        } else if (osName.contains("mac")) {
+            currentOS = OS.MAC;
+            Main.currentOS = OS.MAC;
+        } else if (osName.contains("linux")) {
+            currentOS = OS.LINUX;
+            Main.currentOS = OS.LINUX;
+        }
+
+
         File toolsDir = new File("tools");
         if (toolsDir.exists()) {
             File versionFile = new File("tools/version.txt");
@@ -42,33 +57,28 @@ public class Setup {
 
         }
 
-        String osName = System.getProperty("os.name").toLowerCase();
-        OS currentOS = OS.OTHER;
-        if (osName.contains("windows")) {
-            currentOS = OS.WINDOWS;
-        } else if (osName.contains("mac")) {
-            currentOS = OS.MAC;
-        } else if (osName.contains("linux")) {
-            currentOS = OS.LINUX;
-        }
-
         toolsDir.mkdir();
         System.out.println("[Setup] Exporting resources...");
 
         switch (currentOS) {
             case WINDOWS -> {
+                System.out.println("[Setup] Detected Windows!");
                 exportResource("tools/discord_game_sdk.dll", "tools/discord_game_sdk.dll");
                 exportResource("tools/extractArtwork.vbs", "tools/extractArtwork.vbs");
                 exportResource("tools/getTrackInfo.vbs", "tools/getTrackInfo.vbs");
             }
             case MAC -> {
-                // not suuported yet
-                exportResource("tools/libdiscord_game_sdk.dylib", "tools/libdiscord_game_sdk.dylib");
+                System.out.println("[Setup] Detected Mac!");
+                exportResource("tools/discord_game_sdk.dylib", "tools/discord_game_sdk.dylib");
                 exportResource("tools/extractArtwork.scpt", "tools/extractArtwork.scpt");
                 exportResource("tools/getTrackInfo.scpt", "tools/getTrackInfo.scpt");
             }
             case LINUX -> {
+                System.out.println("[Setup] Detected Linux!");
+                System.err.println("[Setup] Linux is not supported yet!");
+                System.exit(0);
                 // not suuported yet
+
                 exportResource("tools/libdiscord_game_sdk.so", "tools/libdiscord_game_sdk.so");
                 exportResource("tools/extractArtwork.sh", "tools/extractArtwork.sh");
                 exportResource("tools/getTrackInfo.sh", "tools/getTrackInfo.sh");

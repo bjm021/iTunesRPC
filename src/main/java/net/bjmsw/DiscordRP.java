@@ -3,6 +3,7 @@ package net.bjmsw;
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.activity.Activity;
+import net.bjmsw.helper.Setup;
 import net.bjmsw.model.TrackInfo;
 
 import java.io.File;
@@ -23,11 +24,25 @@ public class DiscordRP extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        File discordLibrary = new File("./tools/discord_game_sdk.dll");
+        File discordLibrary = null;
+        switch (Main.currentOS) {
+            case WINDOWS ->
+                    discordLibrary = new File("./tools/discord_game_sdk.dll");
+            case MAC ->
+                    discordLibrary = new File("./tools/discord_game_sdk.dylib");
+            case LINUX ->
+                    discordLibrary = new File("./tools/discord_game_sdk.so");
+
+
+        }
+
+
+        assert discordLibrary != null;
         Core.init(discordLibrary);
 
         try (CreateParams params = new CreateParams()) {
-            params.setClientID(1169073481737064488L);
+            if (Main.currentOS == Setup.OS.MAC) params.setClientID(1169615516168634398L);
+            else params.setClientID(1169073481737064488L);
             params.setFlags(CreateParams.getDefaultFlags());
 
             try (Core core = new Core(params)) {
@@ -54,7 +69,7 @@ public class DiscordRP extends Thread {
                             }
                             else {
                                 activity.assets().setLargeText(trackInfo.getAlbum());
-                                activity.assets().setSmallImage("https://cdn.bjmsw.net/img/itunes_logo.png");
+                                activity.assets().setSmallImage(Main.getDefaultImageUrl());
                                 activity.assets().setSmallText("iTunesRPC by b.jm021");
                             }
 

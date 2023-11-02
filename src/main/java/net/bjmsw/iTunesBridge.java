@@ -1,7 +1,9 @@
 package net.bjmsw;
 
 import net.bjmsw.helper.ImageUploader;
+import net.bjmsw.helper.Setup;
 import net.bjmsw.model.TrackInfo;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -25,7 +27,15 @@ public class iTunesBridge extends Thread {
         while (true) {
 
             try {
-                String command = "cscript //NoLogo .\\tools\\getTrackInfo.vbs";
+                String command = "";
+                switch (Main.currentOS) {
+                    case WINDOWS ->
+                        command = "cscript //NoLogo .\\tools\\getTrackInfo.vbs";
+
+                    case MAC ->
+                        command = "osascript ./tools/getTrackInfo.scpt";
+                }
+
                 Process process = Runtime.getRuntime().exec(command);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
                 String line;
@@ -35,7 +45,6 @@ public class iTunesBridge extends Thread {
                     output.append(line).append("\n");
                 }
 
-                //.out.println(output.toString());
 
                 String base64Output = output.toString();
                 base64Output = base64Output.replace("\n", "");
@@ -43,15 +52,24 @@ public class iTunesBridge extends Thread {
                 String result = new String(decodedBytes, StandardCharsets.UTF_8);
 
 
-                result = result.substring(1);
-                //System.out.println(result);
+                if (Main.currentOS == Setup.OS.WINDOWS)
+                    result = result.substring(1);
+
 
 
 
 
                 JSONObject trackInfoJSON = new JSONObject(result);
-                int playerStatus = trackInfoJSON.getInt("state");
-                trackInfo = new TrackInfo(trackInfoJSON.getString("title"), trackInfoJSON.getString("artist"), trackInfoJSON.getString("album"), trackInfoJSON.getInt("duration"));
+                int playerStatus = 0;
+                if (Main.currentOS == Setup.OS.MAC) {
+                    if (trackInfoJSON.getString("state").equals("playing")) playerStatus = 1;
+                } else playerStatus = trackInfoJSON.getInt("state");
+
+                // parse duration (multi os)
+                int duration = trackInfoJSON.getInt("duration");
+
+
+                trackInfo = new TrackInfo(trackInfoJSON.getString("title"), trackInfoJSON.getString("artist"), trackInfoJSON.getString("album"), duration);
                 if (lastTrackName.equals("notinitalized")) {
                     lastTrackName = trackInfo.getTrackName();
                     System.out.println("[iTunesBridge] First track: " + trackInfo.getTrackName());
@@ -78,7 +96,7 @@ public class iTunesBridge extends Thread {
                 }
 
                 int position = trackInfoJSON.getInt("position");
-                int duration = trackInfoJSON.getInt("duration");
+
 
                 // calculate the end timestamp
                 // now + (duration - position)
@@ -109,7 +127,15 @@ public class iTunesBridge extends Thread {
 
     private void extractArtwork() {
         try {
-            String command = "cscript //NoLogo .\\tools\\extractArtwork.vbs";
+            String command = "";
+            switch (Main.currentOS) {
+                case WINDOWS ->
+                        command = "cscript //NoLogo .\\tools\\extractArtwork.vbs";
+
+                case MAC ->
+                        command = "osascript ./tools/extractArtwork.scpt";
+            }
+
             Process process = Runtime.getRuntime().exec(command);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -123,7 +149,7 @@ public class iTunesBridge extends Thread {
             var format = new JSONObject(output.toString()).getString("format");
 
             if (format.equals("none")) {
-                Main.artworkQueue.add("https://cdn.bjmsw.net/img/itunes_logo.png");
+                Main.artworkQueue.add(Main.getDefaultImageUrl());
                 return;
             }
 

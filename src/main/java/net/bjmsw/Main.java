@@ -18,6 +18,8 @@ public class Main extends Thread {
     public static int playerStatus = 0;
     public static Instant endTime = Instant.now();
 
+    public static Setup.OS currentOS = Setup.OS.OTHER;
+
     public static void main(String[] args) {
         try {
             new Setup();
@@ -37,5 +39,16 @@ public class Main extends Thread {
         DiscordRP discordRP = new DiscordRP(iTunesBridge);
         discordRP.start();
 
+    }
+
+    public static String getDefaultImageUrl() {
+        switch (currentOS) {
+            case MAC -> {
+                return "https://cdn.bjmsw.net/img/AppleMusic_Logo.png";
+            }
+            default -> {
+                return "https://cdn.bjmsw.net/img/itunes_logo.png";
+            }
+        }
     }
 }
