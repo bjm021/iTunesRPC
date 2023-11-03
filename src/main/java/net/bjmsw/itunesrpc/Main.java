@@ -77,14 +77,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         rootPane = new AnchorPane();
-        Scene scene = new Scene(rootPane, 400, 500);
+        Scene scene = new Scene(rootPane, 300, 500);
 
         Label label = new Label("iTunesRPC");
         label.setFont(javafx.scene.text.Font.font(30));
         label.setStyle("-fx-alignment: center;");
         label.setPrefWidth(200);
         label.setPrefHeight(50);
-        label.setLayoutX(100);
+        label.setLayoutX(50);
         label.setLayoutY(20);
         rootPane.getChildren().add(label);
 
@@ -93,23 +93,32 @@ public class Main extends Application {
         statusLabel.setStyle("-fx-alignment: center;");
         statusLabel.setPrefWidth(200);
         statusLabel.setPrefHeight(50);
-        statusLabel.setLayoutX(100);
+        statusLabel.setLayoutX(50);
         statusLabel.setLayoutY(80);
         rootPane.getChildren().add(statusLabel);
 
-        nowPlayingLabel = new Label("Now Playing: " + iBridge.getTrackInfo().getTrackName());
+        Label nowPlayingHeaderLabel = new Label("Now Playing:");
+        nowPlayingHeaderLabel.setFont(javafx.scene.text.Font.font(20));
+        nowPlayingHeaderLabel.setStyle("-fx-alignment: center;");
+        nowPlayingHeaderLabel.setPrefWidth(200);
+        nowPlayingHeaderLabel.setPrefHeight(50);
+        nowPlayingHeaderLabel.setLayoutX(50);
+        nowPlayingHeaderLabel.setLayoutY(120);
+        rootPane.getChildren().add(nowPlayingHeaderLabel);
+
+        nowPlayingLabel = new Label(iBridge.getTrackInfo().isEmpty() ? "n/a" : iBridge.getTrackInfo().getTrackName());
         nowPlayingLabel.setFont(javafx.scene.text.Font.font(20));
         nowPlayingLabel.setStyle("-fx-alignment: center;");
-        nowPlayingLabel.setPrefWidth(350);
+        nowPlayingLabel.setPrefWidth(280);
         nowPlayingLabel.setPrefHeight(50);
-        nowPlayingLabel.setLayoutX(25);
-        nowPlayingLabel.setLayoutY(120);
+        nowPlayingLabel.setLayoutX(10);
+        nowPlayingLabel.setLayoutY(150);
         rootPane.getChildren().add(nowPlayingLabel);
 
         Button toggleRPCButton = new Button("Turn off RPC");
         toggleRPCButton.setPrefWidth(200);
         toggleRPCButton.setPrefHeight(50);
-        toggleRPCButton.setLayoutX(100);
+        toggleRPCButton.setLayoutX(50);
         toggleRPCButton.setLayoutY(410);
         toggleRPCButton.setOnAction(event -> {
             if (toggleRPCButton.getText().equals("Turn off RPC")) {
@@ -159,10 +168,10 @@ public class Main extends Application {
         imageView = new ImageView(artwork);
         imageView.setFitWidth(200);
         imageView.setFitHeight(200);
-        imageView.setLayoutX(100);
-        imageView.setLayoutY(180);
+        imageView.setLayoutX(50);
+        imageView.setLayoutY(190);
         rootPane.getChildren().add(imageView);
-        nowPlayingLabel.setText("Now Playing: " + iBridge.getTrackInfo().getTrackName());
+        nowPlayingLabel.setText(iBridge.getTrackInfo().isEmpty() ? "n/a" : iBridge.getTrackInfo().getTrackName());
 
     }
 
