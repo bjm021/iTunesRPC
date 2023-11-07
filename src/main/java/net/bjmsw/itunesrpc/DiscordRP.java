@@ -28,12 +28,9 @@ public class DiscordRP extends Thread {
         }
         File discordLibrary = null;
         switch (Main.currentOS) {
-            case WINDOWS ->
-                    discordLibrary = new File("./tools/discord_game_sdk.dll");
-            case MAC ->
-                    discordLibrary = new File("./tools/discord_game_sdk.dylib");
-            case LINUX ->
-                    discordLibrary = new File("./tools/discord_game_sdk.so");
+            case WINDOWS -> discordLibrary = new File("./tools/discord_game_sdk.dll");
+            case MAC -> discordLibrary = new File("./tools/discord_game_sdk.dylib");
+            case LINUX -> discordLibrary = new File("./tools/discord_game_sdk.so");
 
 
         }
@@ -59,6 +56,19 @@ public class DiscordRP extends Thread {
                             return;
                         }
 
+                        if (Main.updateCredits) {
+                            System.out.println("[DiscordRP] Updating credits");
+                            if (!Main.showCredits) {
+                                activity.assets().setSmallText("");
+                                activity.assets().setSmallImage("");
+                            } else {
+                                activity.assets().setSmallImage(Main.getDefaultImageUrl());
+                                activity.assets().setSmallText("iTunesRPC by b.jm021");
+                            }
+                        }
+                        Main.updateCredits = false;
+
+
                         if (!Main.trackInfoQueue.isEmpty()) {
                             System.out.println("[DiscordRP] Queue not empty, updating RPC");
                             TrackInfo trackInfo = Main.trackInfoQueue.poll();
@@ -71,12 +81,11 @@ public class DiscordRP extends Thread {
                             else activity.setState("iTunesRPC by b.jm021");
 
 
-                            if (trackInfo.getAlbum().isEmpty()) {
+                            if (trackInfo.getAlbum().isEmpty() || !Main.showCredits) {
                                 activity.assets().setLargeText("iTunesRPC by b.jm021");
                                 activity.assets().setSmallText("");
                                 activity.assets().setSmallImage("");
-                            }
-                            else {
+                            } else {
                                 activity.assets().setLargeText(trackInfo.getAlbum());
                                 activity.assets().setSmallImage(Main.getDefaultImageUrl());
                                 activity.assets().setSmallText("iTunesRPC by b.jm021");
@@ -113,5 +122,4 @@ public class DiscordRP extends Thread {
             }
         }
     }
-
 }

@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +26,9 @@ public class Main extends Application {
     public static Queue<String> artworkQueue;
     public static boolean rpcEnabled = true;
     public static boolean rpcRunning = false;
+
+    public static boolean showCredits = true;
+    public static boolean updateCredits = false;
 
     public static int playerStatus = 0;
     public static Instant endTime = Instant.now();
@@ -135,6 +139,18 @@ public class Main extends Application {
             }
         });
         rootPane.getChildren().add(toggleRPCButton);
+
+        CheckBox showCreditsCheckBox = new CheckBox("Show credits (updates on new track)");
+        showCreditsCheckBox.setSelected(true);
+        showCreditsCheckBox.setPrefWidth(200);
+        showCreditsCheckBox.setPrefHeight(50);
+        showCreditsCheckBox.setLayoutX(50);
+        showCreditsCheckBox.setLayoutY(450);
+        showCreditsCheckBox.setOnAction(event -> {
+            showCredits = showCreditsCheckBox.isSelected();
+            updateCredits = true;
+        });
+        rootPane.getChildren().add(showCreditsCheckBox);
 
         uiInitialized = true;
         updateUI();
