@@ -51,3 +51,5 @@ config.json
 
 /tools/
 /tools/*
+test.vbs
+amtest.vbs
