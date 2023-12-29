@@ -82,7 +82,7 @@ public class DiscordRP extends Thread {
 
 
                             if (trackInfo.getAlbum().isEmpty() || !Main.showCredits) {
-                                activity.assets().setLargeText("iTunesRPC by b.jm021");
+                                activity.assets().setLargeText("trackInfo.getAlbum()");
                                 activity.assets().setSmallText("");
                                 activity.assets().setSmallImage("");
                             } else {
